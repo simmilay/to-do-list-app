@@ -35,7 +35,6 @@ function idCheck(uniqueId) {
   }
 }
 
-
 //category data is called here
 function callCategoryData() {
   return JSON.parse(localStorage.getItem("categories"));
@@ -62,13 +61,9 @@ ctgryBtn.addEventListener("click", function createCategory() {
   localStorage.setItem("categories", JSON.stringify(category));
 });
 
-
-
-
 function callTaskData() {
   return JSON.parse(localStorage.getItem("tasks"));
 }
-
 
 const taskBtn = document.getElementById("task-btn");
 const categorySelect = document.getElementById("category-select");
@@ -84,7 +79,6 @@ taskBtn.addEventListener("click", function createTask() {
     );
     return alarm;
   }
-  console.log("deneme");
 
   const uniqueId = idGenerator();
   const startDate = document.getElementById("startDate");
@@ -92,11 +86,11 @@ taskBtn.addEventListener("click", function createTask() {
 
   const item = {
     id: uniqueId,
-    categoryId: categorySelect,
+    categoryId: document.getElementById("category-select").value,
     taskName: enteredTask.value,
-    taskDescription: task_Description,
-    taskStartDate: startDate,
-    taskEndDate: endDate,
+    taskDescription: task_Description.value,
+    taskStartDate: startDate.value,
+    taskEndDate: endDate.value,
   };
   let task = JSON.parse(localStorage.getItem("tasks"));
   task.push(item);
@@ -105,24 +99,21 @@ taskBtn.addEventListener("click", function createTask() {
   taskDetail.innerHTML = ``;
 });
 
+function createCategorySelect() {
+  const selectBar = document.getElementById("category-select");
+  selectBar.innerHTML = "";
 
-function createCategorySelect(){
-    const selectBar = document.getElementById("category-select");
-    
-    selectBar.innerHTML="";
+  const selectedValue = callCategoryData().forEach((element) => {
+    const categoryOption = document.createElement("option");
+    categoryOption.value = element.id;
+    categoryOption.id = element.id;
+    categoryOption.innerText = element.categoryName;
 
-    const selectedValue = callCategoryData().forEach(element => {
-        const categoryOption =document.createElement("option");
-        categoryOption.value =  element.id;
-        categoryOption.innerText =element.categoryName;
-
-        selectBar.appendChild(categoryOption);
-    });
-    
+    selectBar.appendChild(categoryOption);
+  });
 }
 
 enteredTask.addEventListener("click", function detailedTask() {
-  console.log("denem");
   taskDetail.innerHTML = `
     <input
           type="text"
@@ -131,9 +122,10 @@ enteredTask.addEventListener("click", function detailedTask() {
           class="task-detail"
           placeholder="Enter Task Description"
         />
-        <select name="category" id="category-select" onclick="createCategorySelect(this)">
+        <select name="category-select" id="category-select" >
           <option value="Choice-Category">Choice Category</option>
         </select>
         <div><input type="date" id="startDate"/><input type="date" id="endDate"/></div>    
     `;
+  createCategorySelect();
 });
