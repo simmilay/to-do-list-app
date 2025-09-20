@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body>
+  <body onload="listTasks()">
     <!-- <table>
       <thead>
         <tr class="createCategory">
@@ -61,11 +61,11 @@
           placeholder="Enter Task"
         />
         <button id="task-btn">+</button>
-      </div>
-      <div id="create-task-description">
         
       </div>
+      <div id="create-task-description"></div>
     </div>
+    <div id="task-list"></div>
     <script src="app.js"></script>
   </body>
 </html>

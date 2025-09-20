@@ -43,7 +43,7 @@ function addItem(element) {
 
 function removeItem(id) {
   //console.log(id);
-  f
+  
 // delete with map-filter
   const updatedTasks = tasks
     .map((task) => {

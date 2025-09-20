@@ -15,8 +15,7 @@ window.addEventListener("load", function chekLocalStorage() {
 //identities are created here
 function idGenerator() {
   const random_id =
-    Math.random().toString(30) + Math.random().toString(30).substring(2, 17);
-  console.log(random_id);
+    Date.now() + Math.floor(Math.random() * 100250 + 10000) + 25978;
   return idCheck(random_id);
 }
 
@@ -59,6 +58,7 @@ ctgryBtn.addEventListener("click", function createCategory() {
   category.push(item);
 
   localStorage.setItem("categories", JSON.stringify(category));
+  enteredCategory.value = "";
 });
 
 function callTaskData() {
@@ -84,6 +84,16 @@ taskBtn.addEventListener("click", function createTask() {
   const startDate = document.getElementById("startDate");
   const endDate = document.getElementById("endDate");
 
+  //for date
+  /* if (
+    endDate.value &&
+    startDate.value &&
+    new Date(endDate.value) < new Date(startDate.value)
+  ) {
+    const dateAlert = alert("End date cannot be earlier than start date");
+    return dateAlert;
+  } */
+
   const item = {
     id: uniqueId,
     categoryId: document.getElementById("category-select").value,
@@ -97,11 +107,21 @@ taskBtn.addEventListener("click", function createTask() {
 
   localStorage.setItem("tasks", JSON.stringify(task));
   taskDetail.innerHTML = ``;
+  enteredTask.value = "";
 });
 
+let tasks = callTaskData();
+//When the button is pressed, the Task is deleted from localStorage.
+function removeItem(taskId) {
+  tasks = tasks.filter((e) => e.id != taskId);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+//the section created by the content of the select element containing the categories
 function createCategorySelect() {
   const selectBar = document.getElementById("category-select");
   selectBar.innerHTML = "";
+  selectBar.innerHTML = `<option value=''>Select Category</option>`;
 
   const selectedValue = callCategoryData().forEach((element) => {
     const categoryOption = document.createElement("option");
@@ -113,6 +133,7 @@ function createCategorySelect() {
   });
 }
 
+//section that opens to add task details
 enteredTask.addEventListener("click", function detailedTask() {
   taskDetail.innerHTML = `
     <input
@@ -125,7 +146,41 @@ enteredTask.addEventListener("click", function detailedTask() {
         <select name="category-select" id="category-select" >
           <option value="Choice-Category">Choice Category</option>
         </select>
-        <div><input type="date" id="startDate"/><input type="date" id="endDate"/></div>    
+        <div>
+        <input type="date" id="startDate"/>
+        <input type="date" id="endDate"/></div>    
     `;
   createCategorySelect();
 });
+
+function listTasks() {
+  const itemList = document.getElementById("task-list");
+  const taskData = callTaskData();
+  taskData.forEach((element) => {
+    if (element.id) {
+      itemList.innerHTML += `
+    <tr>
+        <td><input type="text" value="${element.taskName}" disabled></td>
+        <td><input type="text" value="${element.taskDescription}" disabled ></td>
+        <td><input type="date" " value="${element.taskStartDate}" disabled ></td>
+        <td><input type="date" " value="${element.taskEndDate}" disabled></td>
+        <td><button onclick="removeItem(${element.id})">&times;</button></td>
+    </tr>
+    <br>
+    `;
+    }
+  });
+}
+
+//for date
+/* const endDate = document.getElementById("start-date");
+const startDate = document.getElementById("end-date");
+
+endDate.addEventListener("change", function () {
+  startDate.min = endDate.value;
+});
+
+startDate.addEventListener("change", function () {
+  endDate.max = startDate.value;
+});
+ */
