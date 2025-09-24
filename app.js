@@ -17,12 +17,9 @@ window.addEventListener("load", function chekLocalStorage() {
 
 document.addEventListener("keydown", function (event) {
   if (event.key == "Escape") {
-    const cf = confirm("Have you given up on adding tasks ?");
-    if (cf == true) {
-      const ctd = document.getElementById("create-task-description");
-      ctd.innerHTML = ``;
-      enteredTask.value = "";
-    }
+    const ctd = document.getElementById("create-task-description");
+    ctd.innerHTML = ``;
+    enteredTask.value = "";
   }
 });
 
@@ -132,25 +129,6 @@ function removeItem(taskId) {
 }
 
 function updateItem(taskId) {
-  /* let tasks = callTaskData();
-  document.getElementById("taskName_${x.id}").disabled = false;
-  task.map((x) => {
-    if (x.id === taskId) {
-      const item = {
-        taskName: document.getElementById(`taskName_${x.id}`),
-        taskDescription: document.getElementById(`taskDescription_${x.id}`)
-          .value,
-        taskStartDate: document.getElementById(`taskStartDate_${x.taskIdDate}`)
-          .value,
-        taskEndDate: document.getElementById(
-          `taskEndDate_${element.taskIdDate}`
-        ).value,
-      };
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      listTasks();
-    }
-  }); */
-
   let tasks = callTaskData();
 
   tasks.forEach((x) => {
@@ -167,42 +145,10 @@ function updateItem(taskId) {
   });
 }
 
-/* Inputlardan .value ile yeni değerleri al.
-localStorage’dan task listesini çek.
-find veya map ile id’si eşleşen task’ı bul.
-Onun property’lerini yeni değerlerle değiştir. */
-
-function saveItem(taskId) {
-  const newTaskName = document.getElementById(`newTaskName_${taskId}`).value;
-  const newTaskDescription = document.getElementById(
-    `newTaskDescription_${taskId}`
-  ).value;
-  const newTaskStartDate = document.getElementById(
-    `newTaskStartDate_${taskId}`
-  ).value;
-  const newTaskEndDate = document.getElementById(
-    `newTaskEndDate_${taskId}`
-  ).value;
-
-  let tasks = callTaskData();
-
-  tasks.find((x) => {
-    if (x.id === taskId) {
-      x.taskName = newTaskName;
-      x.taskDescription = newTaskDescription;
-      x.taskStartDate = newTaskStartDate;
-      x.taskEndDate = newTaskEndDate;
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      listTasks();
-    }
-  });
-
-  let updateArea = document.getElementById(`divId_${taskId}`);
-  updateArea.innerHTML = ``;
-}
 //the section created by the content of the select element containing the categories
-function createCategorySelect() {
-  const selectBar = document.getElementById("category-select");
+function createCategorySelect(documentElementId) {
+  const selectBar = document.getElementById(documentElementId);
+
   selectBar.innerHTML = "";
   selectBar.innerHTML = `<option value=''>Select Category</option>`;
 
@@ -249,7 +195,7 @@ enteredTask.addEventListener("click", function detailedTask() {
     }
   });
 
-  createCategorySelect();
+  createCategorySelect("category-select");
 });
 
 //list all tasks
@@ -257,20 +203,81 @@ function listTasks() {
   const itemList = document.getElementById("task-list");
   itemList.innerHTML = "";
   const taskData = callTaskData();
+
   taskData.forEach((element) => {
     if (element.id) {
       itemList.innerHTML += `
     <ul style="display : flex; list-style-type:none; margin:0px; padding : 0px; ">
-        <li  style ="margin: 0 3px"><input id="taskName_${element.id}" type="text" value="${element.taskName}" disabled></li>
-        <li style ="margin: 0 3px"><button onclick="removeItem(${element.id})">&times;</button></li>
-        <li style ="margin: 0 3px"><button  onclick="updateItem(${element.id})">Update </button></li>
+        <li  style ="margin: 0 3px"><input id="taskName_${element.id}" type="text" value="${element.taskName}" disabled ></li>
+        <li style ="margin: 0 3px"><button  onclick="removeItem(${element.id})"><img src="images/delete_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" class="btn-img" alt=""></button></li>
+        <li style ="margin: 0 3px">
+        <button id="-updatebtn-${element.id}" onclick="openModal(${element.id})">
+        <img src="images/edit_note_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" class="btn-img" alt="">
+        </button></li>
         <div id="divId_${element.id}"}>
     </ul>   
     `;
     }
   });
+}
 
-  /*   <li style ="margin: 0 3px"><input id="taskDescription_${element.id}" type="text" value="${element.taskDescription}" disabled ></li>
-        <li style ="margin: 0 3px"><input id="taskStartDate_${element.id}" type="date" " value="${element.taskStartDate}" disabled ></li>
-        <li style ="margin: 0 3px"><input id="taskEndDate_${element.id}" type="date" " value="${element.taskEndDate}" disabled></li> */
+//calls the update modal
+const modal_container = document.getElementById("modal_container");
+const close = document.getElementById("close");
+const updateSave = document.getElementById("update-save");
+let taskId_forSave = null;
+
+function openModal(taskId) {
+  modal_container.classList.add("show");
+  createCategorySelect("category-select-modal");
+  const tasks = callTaskData();
+  const check = tasks.find((x) => {
+    if (x.id === taskId) {
+      document.getElementById("task-name-modal").value = x.taskName;
+      document.getElementById("task-description-modal").value =
+        x.taskDescription;
+      document.getElementById("category-select-modal").value = x.categoryId;
+      document.getElementById("task-start-date-modal").value = x.taskStartDate;
+      document.getElementById("task-end-date-modal").value = x.taskEndDate;
+      
+    }
+  });
+  if(check){
+    taskId_forSave = taskId;  
+  }
+}
+
+function closeModal() {
+  modal_container.classList.remove("show");
+}
+close.addEventListener("click", closeModal);
+
+function saveItem(taskId) {
+  const newTaskName = document.getElementById("task-name-modal").value;
+  const newTaskDescription = document.getElementById(
+    "task-description-modal"
+  ).value;
+  const newTaskCategory = document.getElementById(
+    "category-select-modal"
+  ).value;
+  const newTaskStartDate = document.getElementById(
+    "task-start-date-modal"
+  ).value;
+  const newTaskEndDate = document.getElementById("task-end-date-modal").value;
+
+  let tasks = callTaskData();
+
+  tasks.find((x) => {
+    if (x.id === taskId) {
+      x.taskName = newTaskName;
+      x.taskDescription = newTaskDescription;
+      x.taskStartDate = newTaskStartDate;
+      x.taskEndDate = newTaskEndDate;
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      listTasks();
+      closeModal();
+    }
+  });
+
+  updateSave.addEventListener("click", saveItem(taskId_forSave));
 }

@@ -3,70 +3,70 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Document</title>
   </head>
   <body onload="listTasks()">
-    <!-- <table>
-      <thead>
-        <tr class="createCategory">
-          <td>
-            <input
-              type="text"
-              name="create-ctgry"
-              id="create-ctgry"
-              placeholder="Enter Category"
-            />
-          </td>
-          <td><button id="ctgry-btn">+</button></td>
-        </tr>
-        <tr>
-          <td>
-            <input
-              id="create-task"
-              name="create-task"
-              type="text"
-              placeholder="Enter Task"
-            />
-          </td>
-          <td><button id="task-btn">+</button></td>
-          <td>
-            <input
-              type="text"
-              name="task-detail"
-              id="task-detail"
-              class="task-detail"
-              placeholder="Enter Task Description"
-            />
-          </td>
-        </tr>
-      </thead>
-      <tbody id="item-list"></tbody>
-    </table> -->
-
-    <div class="create-ctrgy">
-      <input
-        type="text"
-        name="create-ctgry"
-        id="create-ctgry"
-        placeholder="Enter Category"
-      />
-      <button id="ctgry-btn">+</button>
-    </div>
-    <div class="create-all-task">
-      <div class="create-task">
-        <input
-          id="create-task"
-          name="create-task"
-          type="text"
-          placeholder="Enter Task"
-        />
-        <button id="task-btn">+</button>
-        
+    <div class="modal-container" id="modal_container">
+      <div class="modal">
+        <h1>Update Task</h1>
+        <input type="text" id="task-name-modal" />
+        <select
+          name="category-select-modal"
+          id="category-select-modal"
+        ></select>
+        <br />
+        <input type="text" id="task-description-modal" /><br />
+        <input type="date" id="task-start-date-modal" />
+        <input type="date" id="task-end-date-modal" />
+        <button id="update-save" >Save</button>
+        <button id="close">Cancel</button>
       </div>
-      <div id="create-task-description"></div>
     </div>
-      
-    <div id="task-list"></div>
+
+    <div class="cart">
+      <div class="add">
+        <div class="create-ctrgy">
+          <input
+            type="text"
+            name="create-ctgry"
+            id="create-ctgry"
+            placeholder="Enter Category"
+          />
+          <button class="btns" id="ctgry-btn">
+            <img
+              src="images/add_24dp_000000_FILL0_wght400_GRAD0_opsz24.png"
+              class="btn-img"
+              alt=""
+            />
+          </button>
+        </div>
+
+        <div class="create-task">
+          <input
+            id="create-task"
+            name="create-task"
+            type="text"
+            placeholder="Enter Task"
+          />
+          <button id="task-btn">
+            <img
+              src="images/add_24dp_000000_FILL0_wght400_GRAD0_opsz24.png"
+              class="btn-img"
+              alt=""
+            />
+          </button>
+        </div>
+        <div id="create-task-description" class="task-add"></div>
+      </div>
+
+      <div id="task-list"></div>
+    </div>
     <script src="app.js"></script>
   </body>
 </html>
+
+
+
+
+ 

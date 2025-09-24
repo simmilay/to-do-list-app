@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  box-sizing: border-box;
+  font-family: "Exo 2", sans-serif;
+}
+body {
+  background: #5170ff;
+  background: linear-gradient(
+    32deg,
+    rgba(81, 112, 255, 1) 14%,
+    rgba(9, 9, 121, 1) 58%,
+    rgba(81, 112, 255, 1) 100%
+  );
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+input {
+  height: 25px;
+}
+button {
+  height: 25px;
+}
+.btn-img {
+  height: 20px;
+  text-align: center;
+}
+
+/*toDoArea*/
+.cart {
+  padding: 30px;
+  border-radius: 20px;
+  background-color: #f3f8ff;
+  width: 800px;
+  align-items: center;
+  justify-items: center;
+  box-shadow: 1px 4px 6px 1px #111e63;
+}
+.add {
+  padding: 25px;
+}
+
+/*categories*/
+.create-ctrgy {
+  background-color: #f3f8ff;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 5%;
+}
+
+/*tasks*/
+.create-task {
+  display: flex;
+}
+
+.task-add {
+  align-items: center;
+  justify-content: center;
+}
+
+/*Modal Container*/
+.modal-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0; /*eğer modalı görmek istersen burayı aç*/
+  pointer-events: none;
+}
+.modal-container.show{
+    pointer-events: auto;
+    opacity:1 ;
+}
+
+.modal {
+  background-color: #f3f8ff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 30px 50px;
+  border-radius: 5px;
+  width: 600px;
+  max-width: 100%;
+  text-align: center;
+}
